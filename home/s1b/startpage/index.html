@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <meta name="color-scheme" content="dark only">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="referrer" content="no-referrer">
-  <meta name="color-scheme" content="dark only">
   <title>start</title>
   <link rel="icon" href="data:,">
   <link rel="stylesheet" href="colors.css">
@@ -42,11 +42,14 @@
       <dl>
         <dt>/</dt><dd>focus search (insert mode)</dd>
         <dt>Esc</dt><dd>leave search / close this overlay</dd>
-        <dt>a&ndash;z</dt><dd>open link by its hint (normal mode)</dd>
+        <dt>a&ndash;z, 1&ndash;2</dt><dd>open link by its hint (normal mode)</dd>
+        <dt>i</dt><dd>focus search (same as /)</dd>
         <dt>Shift+hint</dt><dd>open link in a new tab</dd>
         <dt>Tab / Enter</dt><dd>walk links / open focused link</dd>
         <dt>?</dt><dd>toggle this overlay</dd>
       </dl>
+      <h2>link hints</h2>
+      <dl id="hintlist"></dl>
       <h2>search prefixes</h2>
       <dl id="bangs"></dl>
     </div>

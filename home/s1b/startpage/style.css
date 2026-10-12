@@ -1,20 +1,13 @@
 /* Colors come from colors.css (generated from the Stylix palette). */
 *, *::before, *::after { box-sizing: border-box; }
 
-html {
-  height: 100%;
-  margin: 0;
-  background: var(--base00);
-  color-scheme: dark;
-}
-
-/* Transparent body so the fixed .bg layer (z-index -2) shows through. */
+html { height: 100%; margin: 0; background: var(--base00); color-scheme: dark; }
 body {
   margin: 0;
   height: 100%;
   background: transparent;
   color: var(--base05);
-  font-family: var(--font-mono), "Maple Mono NF", "JetBrainsMono Nerd Font", monospace;
+  font-family: var(--font-mono), "Maple Mono NF", "JetBrainsMono Nerd Font", "JetBrainsMono NFM", "Symbols Nerd Font", monospace;
   font-size: 15px;
   -webkit-font-smoothing: antialiased;
 }
@@ -24,8 +17,8 @@ body {
   background:
     radial-gradient(ellipse at 18% 0%, color-mix(in srgb, var(--base0D) 22%, transparent), transparent 55%),
     radial-gradient(ellipse at 90% 100%, color-mix(in srgb, var(--base08) 16%, transparent), transparent 55%),
-    linear-gradient(color-mix(in srgb, var(--base00) 62%, transparent), color-mix(in srgb, var(--base00) 74%, transparent)),
-    url("bg.png") center / cover no-repeat,
+    linear-gradient(color-mix(in srgb, var(--base00) 35%, transparent), color-mix(in srgb, var(--base00) 50%, transparent)),
+    url("bg.jpg") center / cover no-repeat,
     var(--base00);
 }
 
@@ -41,7 +34,7 @@ body {
 
 main {
   min-height: 100%;
-  max-width: 1100px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 9vh 2rem 2rem;
   display: flex; flex-direction: column; gap: 2.4rem;
@@ -97,7 +90,7 @@ header { text-align: center; }
 
 .groups {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1.2rem;
 }
 .group {
@@ -166,3 +159,7 @@ body.normal .mode { background: var(--base0E); }
 .card dd { margin: 0; color: var(--base05); }
 
 @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
+
+/* link icons (Nerd Font glyphs; hidden if no Nerd Font) */
+.ico { width: 1.1rem; text-align: center; color: var(--accent, var(--base0D)); opacity: .85; }
+body.noicons .ico { display: none; }

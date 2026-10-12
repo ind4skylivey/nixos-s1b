@@ -1,29 +1,46 @@
 // Start page: clock, prefix search, keyboard hints. No network calls.
 "use strict";
 
+// [key, label, url, nerd-font glyph]
 const GROUPS = [
   { name: "dev", accent: "var(--base0D)", links: [
-    ["g", "GitHub", "https://github.com/ind4skylivey"],
-    ["r", "nixos-s1b", "https://github.com/ind4skylivey/nixos-s1b"],
-    ["n", "search.nixos.org", "https://search.nixos.org/packages"],
-    ["h", "home-manager options", "https://home-manager-options.extranix.com/"],
-    ["o", "noogle", "https://noogle.dev/"],
-    ["m", "mynixos", "https://mynixos.com/"],
+    ["g", "GitHub", "https://github.com/ind4skylivey", "\uf09b"],
+    ["r", "nixos-s1b", "https://github.com/ind4skylivey/nixos-s1b", "\uea62"],
+    ["n", "search.nixos.org", "https://search.nixos.org/packages", "\uf313"],
+    ["h", "home-manager options", "https://home-manager-options.extranix.com/", "\uf015"],
+    ["o", "noogle", "https://noogle.dev/", "\u03bb"],
+    ["m", "mynixos", "https://mynixos.com/", "\uf313"],
+  ]},
+  { name: "work", accent: "var(--base0A)", links: [
+    ["l", "Linear", "https://linear.app", "\uf0ae"],
+    ["s", "Sentry", "https://sentry.io", "\uf188"],
+    ["v", "Vibe / Le Chat", "https://chat.mistral.ai", "\uf086"],
+    ["k", "Kilo Code", "https://app.kilocode.ai", "\uf121"],
+    ["j", "GitLab", "https://gitlab.com", "\uf296"],
+    ["u", "GitHub (home)", "https://github.com", "\uf09b"],
+    ["z", "Bitflow org", "https://github.com/bfleming-bitflow", "\uf0e8"],
   ]},
   { name: "security", accent: "var(--base08)", links: [
-    ["e", "exploit-db", "https://www.exploit-db.com/"],
-    ["c", "CVE / NVD", "https://nvd.nist.gov/vuln/search"],
-    ["b", "HackTheBox", "https://app.hackthebox.com/"],
-    ["t", "TryHackMe", "https://tryhackme.com/"],
-    ["f", "GTFOBins", "https://gtfobins.github.io/"],
+    ["e", "exploit-db", "https://www.exploit-db.com/", "\uf0e7"],
+    ["c", "CVE / NVD", "https://nvd.nist.gov/vuln/search", "\uf071"],
+    ["b", "HackTheBox", "https://app.hackthebox.com/", "\uf1b2"],
+    ["t", "TryHackMe", "https://tryhackme.com/", "\uf11b"],
+    ["f", "GTFOBins", "https://gtfobins.github.io/", "\uf120"],
   ]},
   { name: "linux", accent: "var(--base0C)", links: [
-    ["a", "Arch Wiki", "https://wiki.archlinux.org/"],
-    ["w", "NixOS Wiki", "https://wiki.nixos.org/"],
-    ["x", "mango", "https://github.com/mangowm/mango"],
+    ["a", "Arch Wiki", "https://wiki.archlinux.org/", "\uf303"],
+    ["w", "NixOS Wiki", "https://wiki.nixos.org/", "\uf02d"],
+    ["x", "mango", "https://github.com/mangowm/mango", "\uf2d2"],
+  ]},
+  { name: "media / daily", accent: "var(--base09)", links: [
+    ["y", "YouTube", "https://www.youtube.com/", "\uf16a"],
+    ["d", "Reddit", "https://www.reddit.com/", "\uf1a1"],
+    ["q", "ProtonDB", "https://www.protondb.com/", "\uf1b6"],
+    ["1", "Proton Mail", "https://mail.proton.me/", "\uf0e0"],
+    ["2", "Tuta Mail", "https://app.tuta.com/", "\uf0e0"],
   ]},
   { name: "personal", accent: "var(--base0E)", links: [
-    ["p", "about", "https://ind4skylivey.github.io/about/"],
+    ["p", "about", "https://ind4skylivey.github.io/about/", "\uf007"],
   ]},
 ];
 
@@ -63,13 +80,14 @@ for (const g of GROUPS) {
   const h = document.createElement("h3");
   h.textContent = g.name;
   const ul = document.createElement("ul");
-  for (const [key, label, url] of g.links) {
+  for (const [key, label, url, icon] of g.links) {
     HINTS[key] = url;
     const li = document.createElement("li");
     const a = document.createElement("a");
     a.href = url;
     a.rel = "noreferrer";
-    a.innerHTML = `<span class="hint">${key}</span><span></span>`;
+    a.innerHTML = `<span class="hint">${key}</span><span class="ico" aria-hidden="true"></span><span></span>`;
+    a.children[1].textContent = icon || "";
     a.lastChild.textContent = label;
     li.append(a);
     ul.append(li);
@@ -78,11 +96,24 @@ for (const g of GROUPS) {
   root.append(sec);
 }
 
+for (const g of GROUPS) {
+  const dt = document.createElement("dt"), dd = document.createElement("dd");
+  dt.textContent = g.name;
+  dd.textContent = g.links.map(([k, l]) => `${k} ${l}`).join("  ·  ");
+  $("#hintlist").append(dt, dd);
+}
 for (const [bang, [name]] of Object.entries(BANGS)) {
   const dt = document.createElement("dt"), dd = document.createElement("dd");
   dt.textContent = bang; dd.textContent = name;
   $("#bangs").append(dt, dd);
 }
+
+// hide glyph icons when no Nerd Font is installed (no tofu boxes)
+document.fonts.ready.then(() => {
+  const ok = ["Maple Mono NF", "JetBrainsMono Nerd Font", "JetBrainsMono NFM", "Symbols Nerd Font"]
+    .some(f => document.fonts.check(`12px "${f}"`, "\uf09b"));
+  if (!ok) document.body.classList.add("noicons");
+});
 
 // ---- search
 function resolve(raw) {
@@ -135,8 +166,9 @@ document.addEventListener("keydown", e => {
   if (!help.hidden) return;
   if (e.key === "/" || e.key === "i") { e.preventDefault(); q.focus(); return; }
 
-  const url = HINTS[e.key.toLowerCase()];
-  if (url && e.key.length === 1) {
+  const k = /^Digit\d$/.test(e.code) ? e.code.slice(5) : e.key.toLowerCase();
+  const url = HINTS[k];
+  if (url && (e.key.length === 1)) {
     e.preventDefault();
     if (e.shiftKey) window.open(url, "_blank", "noopener");
     else location.href = url;

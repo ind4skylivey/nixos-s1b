@@ -1,6 +1,7 @@
 # Start page de Helium (inicio + nueva pestaña).
 # - Archivos estáticos en ./startpage; colors.css se genera desde la paleta
 #   de stylix, así sigue a las especializaciones de tema.
+#   El fondo (bg.jpg) es una imagen fija del repo, no el wallpaper de stylix.
 # - Se instala en ~/.local/share/startpage y se sirve en 127.0.0.1:7777 con
 #   un servicio de usuario (NewTabPageLocation no acepta file://).
 # - Las políticas de Chromium que lo apuntan viven en modules/startpage.nix.
@@ -28,7 +29,6 @@ let
     mkdir -p $out
     cp ${./startpage}/* $out/
     cp ${colors} $out/colors.css
-    cp ${config.stylix.image} $out/bg.png
   '';
 in
 {
