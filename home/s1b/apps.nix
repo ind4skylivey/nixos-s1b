@@ -93,7 +93,7 @@ in
       cmp-nvim-lsp
       nvim-cmp
     ];
-    extraLuaConfig = ''
+    initLua = ''
       -- Fondo explícito: evita E1568 (consulta DSR al terminal).
       vim.o.background = "dark"
       vim.opt.number = true
@@ -139,45 +139,57 @@ in
       vim.keymap.set("n", "<leader>fg", telescope.live_grep, { desc = "Live grep" })
       vim.keymap.set("n", "<leader>fb", telescope.buffers, { desc = "Buffers" })
 
-      -- Nix LSP (nixd) + format on save with nixfmt
+      -- Nix LSP via native vim.lsp.config (avoids nvim-0.11 deprecation)
       local caps = vim.lsp.protocol.make_client_capabilities()
       local ok_cmp, cmp_lsp = pcall(require, "cmp_nvim_lsp")
       if ok_cmp then
         caps = cmp_lsp.default_capabilities(caps)
       end
       local flake_path = vim.fn.expand("~") .. "/nixos-mango"
-      require("lspconfig").nixd.setup({
+      vim.lsp.config("nixd", {
+        cmd = { "nixd" },
+        filetypes = { "nix" },
+        root_markers = { "flake.nix", "flake.lock", ".git" },
         capabilities = caps,
         settings = {
           nixd = {
             formatting = { command = { "nixfmt" } },
-            nixpkgs = { expr = "import (builtins.getFlake \"" .. flake_path .. "\").inputs.nixpkgs { }" },
+            nixpkgs = { expr = 'import (builtins.getFlake "' .. flake_path .. '").inputs.nixpkgs { }' },
             options = {
               nixos = {
-                expr = "(builtins.getFlake \"" .. flake_path .. "\").nixosConfigurations.nixos.options",
+                expr = '(builtins.getFlake "' .. flake_path .. '").nixosConfigurations.nixos.options',
               },
               home_manager = {
-                expr = "(builtins.getFlake \"" .. flake_path .. "\").nixosConfigurations.nixos.options.home-manager.users.type.getSubOptions []",
+                expr = '(builtins.getFlake "'
+                  .. flake_path
+                  .. '").nixosConfigurations.nixos.options.home-manager.users.type.getSubOptions []',
               },
             },
           },
         },
       })
-      -- nil as a light fallback (diagnostics); nixd owns formatting
-      require("lspconfig").nil_ls.setup({
-        capabilities = caps,
-        autostart = false, -- enable with :LspStart nil_ls if needed
-      })
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        pattern = "*.nix",
-        callback = function()
-          vim.lsp.buf.format({ async = false, timeout_ms = 4000 })
+      vim.lsp.enable("nixd")
+
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("mango_lsp", { clear = true }),
+        callback = function(ev)
+          local buf = ev.buf
+          local opts = { buffer = buf }
+          vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+          vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+          vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
+          vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
+          if vim.bo[buf].filetype == "nix" then
+            vim.api.nvim_create_autocmd("BufWritePre", {
+              buffer = buf,
+              group = vim.api.nvim_create_augroup("mango_lsp_fmt_" .. buf, { clear = true }),
+              callback = function()
+                vim.lsp.buf.format({ async = false, timeout_ms = 4000, bufnr = buf })
+              end,
+            })
+          end
         end,
       })
-      vim.keymap.set("n", "gd", vim.lsp.buf.definition, { desc = "LSP definition" })
-      vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP hover" })
-      vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "LSP rename" })
-      vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP code action" })
 
       local ok_cmp2, cmp = pcall(require, "cmp")
       if ok_cmp2 then

@@ -173,7 +173,6 @@ let
     (b "NONE,XF86AudioMute" "spawn,${volMute}" null)
     (b "NONE,XF86AudioMicMute" "spawn,${micMute}" null)
     (b "NONE,XF86AudioPlay" "spawn,playerctl play-pause" null)
-    (b "NONE,XF86AudioPause" "spawn,playerctl play-pause" null)
     (b "NONE,XF86AudioNext" "spawn,playerctl next" null)
     (b "NONE,XF86AudioPrev" "spawn,playerctl previous" null)
     (b "SUPER,F5" "spawn,${micMute}" "Mute microphone")

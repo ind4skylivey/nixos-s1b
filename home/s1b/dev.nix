@@ -130,9 +130,9 @@ in
 
   programs.git = {
     enable = true;
-    userName = "ind4skylivey";
-    userEmail = "ind4skylivey@users.noreply.github.com";
-    extraConfig = {
+    settings = {
+      user.name = "ind4skylivey";
+      user.email = "ind4skylivey@users.noreply.github.com";
       init.defaultBranch = "main";
       pull.rebase = true;
       core.quotepath = false;
