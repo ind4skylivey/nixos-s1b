@@ -26,15 +26,6 @@ complete Wayland desktop built on the [mango](https://github.com/mangowm/mango)
 compositor. Every color, keybind, bar module and package comes from Nix.
 More about me → **[ind4skylivey.github.io/about](https://ind4skylivey.github.io/about/)**
 
-## Screenshots
-
-| | |
-| :---: | :---: |
-| <img src="assets/screenshots/terminal.png" alt="kitty with fastfetch and starship"> | <img src="assets/screenshots/launcher.png" alt="rofi launcher and theme switcher"> |
-| kitty · fastfetch · starship | rofi launcher / theme switcher |
-| <img src="assets/screenshots/tiled.png" alt="btop and yazi tiled"> | <img src="assets/screenshots/desktop.png" alt="clean desktop"> |
-| btop + yazi, tiled | waybar islands + generated wallpaper |
-
 ## Highlights
 
 - **One palette, everywhere.** A custom base16 scheme (*Neon S1B Hk*) goes through
