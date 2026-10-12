@@ -106,6 +106,26 @@
 
       formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt;
 
+      # Plantillas de proyecto: `nix flake init -t ~/nixos-mango#rust`
+      # (o `newproj rust mi-app`). Cada una trae devShell + .envrc + .gitignore.
+      templates = {
+        rust = {
+          path = ./templates/rust;
+          description = "Rust: rustc, cargo, clippy, rustfmt, rust-analyzer";
+          welcomeText = "Rust devShell ready. Run `direnv allow`, then `cargo init`.";
+        };
+        php = {
+          path = ./templates/php;
+          description = "PHP 8.4: composer, phpactor";
+          welcomeText = "PHP devShell ready. Run `direnv allow`, then `composer init`.";
+        };
+        python = {
+          path = ./templates/python;
+          description = "Python 3: uv, ruff, basedpyright";
+          welcomeText = "Python devShell ready. Run `direnv allow`, then `uv init`.";
+        };
+      };
+
       # Shells opcionales (no van en el sistema base).
       #   nix develop ~/nixos-mango#sec
       #   nix develop ~/nixos-mango#re

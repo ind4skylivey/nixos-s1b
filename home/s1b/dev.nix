@@ -31,6 +31,49 @@ let
       exec "${emacsDir}/bin/doom" install "$@"
     '';
   };
+
+  # Atajos de terminal (scripts en el PATH, también usables desde rofi/mango).
+  ta = pkgs.writeShellApplication {
+    name = "ta";
+    runtimeInputs = [ config.programs.tmux.package ];
+    text = ''exec tmux new -A -s "''${1:-main}"'';
+  };
+  icat = pkgs.writeShellApplication {
+    name = "icat";
+    runtimeInputs = [ config.programs.kitty.package ];
+    text = ''exec kitty +kitten icat "$@"'';
+  };
+  kssh = pkgs.writeShellApplication {
+    name = "kssh";
+    runtimeInputs = [ config.programs.kitty.package ];
+    text = ''exec kitty +kitten ssh "$@"'';
+  };
+
+  # Proyecto nuevo desde las plantillas del flake (templates/): rust, php, python.
+  newproj = pkgs.writeShellApplication {
+    name = "newproj";
+    runtimeInputs = with pkgs; [
+      git
+      direnv
+      coreutils
+    ];
+    text = ''
+      flake="''${NEWPROJ_FLAKE:-${config.home.homeDirectory}/nixos-mango}"
+      if [[ $# -lt 1 || "$1" == -h || "$1" == --help ]]; then
+        echo "usage: newproj <rust|php|python> [dir]" >&2
+        exit 64
+      fi
+      tpl="$1"
+      dir="''${2:-.}"
+      mkdir -p "$dir"
+      cd "$dir"
+      [[ -d .git ]] || git init -q
+      nix flake init -t "$flake#$tpl"
+      git add -A
+      direnv allow .
+      echo "▸ $tpl project ready in $(pwd)"
+    '';
+  };
 in
 {
   # ------------------------------------------------------------ Emacs / Doom
@@ -53,6 +96,10 @@ in
     shellcheck
     # terminal
     wl-clipboard
+    ta
+    icat
+    kssh
+    newproj
   ];
 
   # ------------------------------------------------------------ tmux
@@ -128,4 +175,9 @@ in
     nix-lint = "statix check ${config.home.homeDirectory}/nixos-mango && deadnix ${config.home.homeDirectory}/nixos-mango";
     ns = "ns"; # nix-search-tv + fzf (paquete del sistema)
   };
+
+  # newproj con directorio: además entra en él.
+  programs.bash.initExtra = ''
+    newproj() { command newproj "$@" && if [[ -n "''${2:-}" ]]; then cd "$2" || return; fi; }
+  '';
 }
