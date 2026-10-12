@@ -15,6 +15,8 @@ Reproducible, themeable, and rebuilt with a single command.
 [![Wayland](https://img.shields.io/badge/Wayland-native-7ad8e8?style=for-the-badge&logo=wayland&logoColor=black)](https://wayland.freedesktop.org)
 
 <img src="assets/screenshots/desktop.png" alt="Neon S1B Hk desktop: mango with waybar islands" width="100%">
+<br><br>
+<img src="assets/screenshots/startpage.png" alt="Keyboard-driven Helium start page" width="100%">
 
 </div>
 
