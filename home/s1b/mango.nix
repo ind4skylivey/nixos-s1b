@@ -230,6 +230,7 @@ let
     "${pad 24 "Super+Ctrl+Shift+1..9"}Toggle window on tag"
     "${pad 24 "Super+Mouse L / R"}Move / resize window"
     "${pad 24 "Super+Wheel"}Previous / next busy tag"
+    "${pad 24 "Helium start page"}/ search · Esc normal · letter opens link · ? help"
   ];
 in
 {

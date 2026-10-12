@@ -19,6 +19,7 @@
     ./dev.nix
     ./git.nix
     ./screenshots.nix
+    ./startpage.nix
   ];
 
   home.username = "s1b";
