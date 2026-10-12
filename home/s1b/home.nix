@@ -17,6 +17,7 @@
     ./nvim.nix
     ./desktop-apps.nix
     ./dev.nix
+    ./git.nix
     ./screenshots.nix
   ];
 

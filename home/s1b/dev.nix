@@ -1,4 +1,5 @@
 # Desarrollo y utilidades de terminal: tmux, direnv, Emacs (Doom), CLI.
+# Git (firma, delta, ssh-agent) vive en git.nix.
 # bat, fzf, lazygit y tmux los tematiza stylix con la paleta activa.
 {
   config,
@@ -126,16 +127,5 @@ in
     lg = "lazygit";
     nix-lint = "statix check ${config.home.homeDirectory}/nixos-mango && deadnix ${config.home.homeDirectory}/nixos-mango";
     ns = "ns"; # nix-search-tv + fzf (paquete del sistema)
-  };
-
-  programs.git = {
-    enable = true;
-    settings = {
-      user.name = "ind4skylivey";
-      user.email = "ind4skylivey@users.noreply.github.com";
-      init.defaultBranch = "main";
-      pull.rebase = true;
-      core.quotepath = false;
-    };
   };
 }
