@@ -49,6 +49,8 @@ in
           button-text = "󰎟  Clear";
         };
         dnd.text = "Do not disturb";
+        # Sin esta entrada swaync avisa "notifications: Config not found".
+        notifications.vexpand = true;
         mpris = {
           image-size = 64;
           autohide = true;

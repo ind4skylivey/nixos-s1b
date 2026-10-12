@@ -34,9 +34,49 @@ let
         } end'
     '';
   };
+  # Visualizador: cava corre como proceso aparte y waybar solo lee su salida.
+  # El módulo `cava` integrado (libcava) tumbaba waybar 0.15 con un double
+  # free en CavaBackend::loadConfig; si este proceso cae, waybar lo relanza.
+  cavaBars = pkgs.writeShellApplication {
+    name = "waybar-cava";
+    runtimeInputs = [
+      pkgs.cava
+      pkgs.gnused
+      pkgs.coreutils
+    ];
+    text = ''
+      conf=$(mktemp -t waybar-cava.XXXXXX)
+      trap 'rm -f "$conf"' EXIT
+      cat > "$conf" <<EOF
+      [general]
+      framerate = 30
+      bars = 12
+      autosens = 1
+      lower_cutoff_freq = 50
+      higher_cutoff_freq = 10000
+      [input]
+      method = pipewire
+      source = auto
+      [output]
+      method = raw
+      raw_target = /dev/stdout
+      data_format = ascii
+      ascii_max_range = 7
+      [smoothing]
+      noise_reduction = 77
+      EOF
+      # 0..7 → ▁..█; en silencio (todo ▁) la línea queda vacía y el módulo se oculta.
+      cava -p "$conf" | sed -u -e 's/;//g' \
+        -e 's/0/▁/g; s/1/▂/g; s/2/▃/g; s/3/▄/g; s/4/▅/g; s/5/▆/g; s/6/▇/g; s/7/█/g' \
+        -e 's/^\(▁\)*$//'
+    '';
+  };
 in
 {
-  home.packages = [ windowTitle ];
+  home.packages = [
+    windowTitle
+    cavaBars
+  ];
 
   programs.waybar = {
     enable = true;
@@ -62,7 +102,7 @@ in
       ];
       modules-center = [ "clock" ];
       modules-right = [
-        "cava"
+        "custom/cava"
         "group/sys"
         "pulseaudio"
         "tray"
@@ -80,7 +120,6 @@ in
       # mango publica sus 9 tags por ext-workspace-v1: vacíos = "hidden".
       "ext/workspaces" = {
         format = "{name}";
-        on-click = "activate";
         ignore-hidden = false;
         sort-by-name = true;
       };
@@ -169,25 +208,11 @@ in
         spacing = 8;
       };
 
-      cava = {
-        framerate = 30;
-        autosens = 1;
-        bars = 12;
-        lower_cutoff_freq = 50;
-        higher_cutoff_freq = 10000;
-        method = "pipewire";
-        source = "auto";
-        stereo = true;
-        reverse = false;
-        bar_delimiter = 0;
-        monstercat = false;
-        waves = false;
-        noise_reduction = 0.77;
-        input_delay = 2;
-        format-icons = [ "▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" ];
-        actions.on-click-right = "mode";
-        hide_on_silence = true;
-        sleep_timer = 3;
+      "custom/cava" = {
+        exec = "${cavaBars}/bin/waybar-cava";
+        format = "{}";
+        tooltip = false;
+        restart-interval = 5;
       };
 
       "custom/notification" = {
@@ -261,7 +286,7 @@ in
       #workspaces,
       #custom-window,
       #clock,
-      #cava,
+      #custom-cava,
       #sys,
       #pulseaudio,
       #tray,
@@ -346,7 +371,7 @@ in
       #cpu.critical,
       #memory.critical { color: @red; }
 
-      #cava {
+      #custom-cava {
           color: @accent;
           padding: 0 10px;
           min-width: 70px;

@@ -48,8 +48,9 @@ in
   systemd.user.services.awww = {
     Unit = {
       Description = "awww wallpaper daemon";
+      # Sin After=mango-session.target: el target ya se ordena después de sus
+      # Wants, y ese After cerraba un ciclo con awww-init.
       PartOf = [ "mango-session.target" ];
-      After = [ "mango-session.target" ];
     };
     Service = {
       ExecStart = "${pkgs.awww}/bin/awww-daemon";
@@ -68,9 +69,12 @@ in
     };
     Service = {
       Type = "oneshot";
+      # Espera a que el socket del daemon responda (hasta ~5 s).
+      ExecStartPre = "${pkgs.bash}/bin/sh -c 'i=0; until ${pkgs.awww}/bin/awww query >/dev/null 2>&1; do i=$((i+1)); [ $i -ge 50 ] && exit 1; sleep 0.1; done'";
       ExecStart = "${pkgs.awww}/bin/awww img ${fallback} --transition-type fade --transition-duration 0.6";
     };
-    Install.WantedBy = [ "mango-session.target" ];
+    # Arranca junto con el daemon (no con el target) para no crear ciclos.
+    Install.WantedBy = [ "awww.service" ];
   };
 
   systemd.user.services.mango-wallpaper-rotate = {

@@ -1,10 +1,18 @@
 /* Colors come from colors.css (generated from the Stylix palette). */
 *, *::before, *::after { box-sizing: border-box; }
 
-html, body {
+html {
+  height: 100%;
+  margin: 0;
+  background: var(--base00);
+  color-scheme: dark;
+}
+
+/* Transparent body so the fixed .bg layer (z-index -2) shows through. */
+body {
   margin: 0;
   height: 100%;
-  background: var(--base00);
+  background: transparent;
   color: var(--base05);
   font-family: var(--font-mono), "Maple Mono NF", "JetBrainsMono Nerd Font", monospace;
   font-size: 15px;
@@ -16,7 +24,7 @@ html, body {
   background:
     radial-gradient(ellipse at 18% 0%, color-mix(in srgb, var(--base0D) 22%, transparent), transparent 55%),
     radial-gradient(ellipse at 90% 100%, color-mix(in srgb, var(--base08) 16%, transparent), transparent 55%),
-    linear-gradient(color-mix(in srgb, var(--base00) 88%, transparent), color-mix(in srgb, var(--base00) 94%, transparent)),
+    linear-gradient(color-mix(in srgb, var(--base00) 62%, transparent), color-mix(in srgb, var(--base00) 74%, transparent)),
     url("bg.png") center / cover no-repeat,
     var(--base00);
 }
