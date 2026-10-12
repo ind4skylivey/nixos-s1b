@@ -72,6 +72,7 @@ let
     (b "SUPER+SHIFT,n" "spawn,swaync-client -d -sw" "Do not disturb")
     (b "SUPER,w" "spawn,mango-wallpaper-next" "Next wallpaper")
     (b "SUPER,t" "spawn,mango-theme-switch" "Switch theme")
+    (b "SUPER+CTRL,n" "spawn,nightlight-toggle" "Night light on/off")
 
     # ── capturas (75 %: sin Print; los binds Print siguen por si acaso)
     (b "SUPER+SHIFT,s" ''spawn_shell,grim -g "$(slurp)" - | wl-copy'' "Screenshot region → clipboard")

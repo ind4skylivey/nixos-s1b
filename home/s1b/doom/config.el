@@ -60,6 +60,10 @@
       (message "%s" (mapconcat #'flymake-diagnostic-text diags "\n"))
     (message "Sin diagnósticos en esta línea")))
 
+;; Super+p no tiene atajo en mango, así que llega a Emacs y Doom mostraba
+;; "s-p is undefined". Se abre el selector de proyectos.
+(map! "s-p" #'projectile-switch-project)
+
 (map! :n "C-h" #'evil-window-left
       :n "C-j" #'evil-window-down
       :n "C-k" #'evil-window-up

@@ -67,6 +67,7 @@ in
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     nerd-fonts.symbols-only
+    symbola # respaldo unicode que busca Doom (unfree, uso personal)
     maple-mono.NF
     inter
   ];

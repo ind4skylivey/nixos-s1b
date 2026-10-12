@@ -83,6 +83,7 @@
           inputs.sops-nix.nixosModules.sops
           ./modules/sops.nix
           ./modules/startpage.nix
+          ./modules/maintenance.nix
 
           {
             nix.settings.experimental-features = [

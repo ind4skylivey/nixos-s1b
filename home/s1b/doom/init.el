@@ -5,6 +5,11 @@
 ;; VM con 2 vCPU: la compilación nativa diferida, de a un trabajo.
 (setq native-comp-async-jobs-number 1)
 
+;; Doom v2.2.4: bin/doom-doctor imprime `doom-version' como variable, pero
+;; en esta versión es una función, y `doom doctor' aborta con "Symbol's value
+;; as variable is void". Esta variable con el mismo valor lo evita.
+(defvar doom-version (doom-version))
+
 (doom! :input
 
        :completion
@@ -57,6 +62,7 @@
 
        :lang
        emacs-lisp
+       (javascript +tree-sitter) ; lo exige php +tree-sitter
        (json +tree-sitter)
        (lua +tree-sitter)
        (markdown +tree-sitter)
@@ -66,6 +72,7 @@
        (python +tree-sitter)
        (rust +tree-sitter)
        sh
+       (web +tree-sitter)  ; html/css, también lo exige php
        (yaml +tree-sitter)
 
        :email

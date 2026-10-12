@@ -64,6 +64,7 @@ in
       bash-language-server
       shellcheck
       shfmt
+      tree-sitter # CLI (lo pide :checkhealth nvim-treesitter)
     ];
 
     initLua = ''

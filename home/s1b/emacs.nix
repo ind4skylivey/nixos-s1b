@@ -316,6 +316,8 @@ in
           tree-sitter-python
           tree-sitter-rust
           tree-sitter-toml
+          tree-sitter-typescript
+          tree-sitter-tsx
           tree-sitter-yaml
         ]
       ))
@@ -336,6 +338,7 @@ in
     ripgrep
     fd
     shellcheck
+    python3 # doom doctor: :lang python
   ];
 
   xdg.configFile = {
