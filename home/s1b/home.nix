@@ -14,6 +14,7 @@
     ./wallpapers.nix
     ./themes.nix
     ./apps.nix
+    ./nvim.nix
     ./desktop-apps.nix
     ./dev.nix
     ./screenshots.nix
