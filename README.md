@@ -74,13 +74,15 @@ More about me → **[ind4skylivey.github.io/about](https://ind4skylivey.github.i
 | Login | greetd + tuigreet |
 | Terminal | kitty (Maple Mono NF, animated caret trail, powerline tabs) |
 | Shell / prompt | bash · starship · fastfetch · eza · zoxide · fzf · direnv |
-| Editor | neovim (treesitter, telescope, nixd LSP + nixfmt on save) · Doom Emacs (pgtk) |
+| Editor | neovim (native LSP: nixd · lua_ls · bashls, format on save · telescope + fzf-native · treesitter · gitsigns · diffview · flash · which-key) · Doom Emacs (pgtk) |
+| Git | SSH-signed commits and tags · delta pager · ssh-agent (passphrase once per session) |
 | File manager | [Strata](https://github.com/lgse/strata) (GUI, built from source) · yazi (TUI) |
 | Browser | [Helium](https://github.com/imputnet/helium) |
 | Screenshots | grim · slurp · satty |
 | Wallpaper daemon | awww |
 | Theming | stylix + custom base16 · Papirus (violet) · Bibata Modern Ice · Inter / Maple Mono NF |
 | Monitor / misc | btop · imv · tmux · lazygit · tealdeer |
+| Dev templates | `nix flake init -t` for Rust, PHP and Python (devShell + direnv) |
 
 ## Palette: Neon S1B Hk
 
@@ -123,7 +125,7 @@ specialisation = {
 
 ```
 .
-├── flake.nix                     inputs, nixosConfigurations.nixos, devShells
+├── flake.nix                     inputs, nixosConfigurations.nixos, devShells, templates
 ├── flake.lock
 ├── .sops.yaml                    age public key + creation rules
 ├── hosts/vm/
@@ -146,9 +148,13 @@ specialisation = {
 │   ├── waybar.nix  rofi.nix  swaync.nix  wlogout.nix
 │   ├── lock.nix    idle.nix    wallpapers.nix  themes.nix
 │   ├── kitty.nix   shell.nix   apps.nix  dev.nix
+│   ├── git.nix                   aliases, SSH signing, delta, ssh-agent
+│   ├── nvim.nix                  neovim plugins + palette prelude
+│   ├── nvim/                     neovim Lua (options, keymaps, ui, lsp …)
 │   ├── desktop-apps.nix          Helium, Strata, imv, MIME defaults
 │   └── screenshots.nix           grim/slurp/satty
 ├── pkgs/strata/                  Strata derivation + patch
+├── templates/                    rust · php · python project flakes
 ├── secrets/example.yaml          sops-encrypted dummy
 ├── docs/LOCAL.md                 private local/ setup
 └── assets/screenshots/
@@ -255,6 +261,31 @@ nix develop path:.#re    # ghidra, radare2, gdb+gef, binwalk, pwntools
 ```
 
 The shell aliases `sec` and `re` point at the same shells.
+
+## Project templates
+
+Each template ships a `flake.nix` devShell, an `.envrc` (`use flake`) and a `.gitignore`.
+
+| Template | Toolchain |
+| --- | --- |
+| `rust` | rustc · cargo · clippy · rustfmt · rust-analyzer |
+| `php` | PHP 8.4 · composer · phpactor |
+| `python` | python3 · uv · ruff · basedpyright |
+
+```sh
+nix flake init -t ~/nixos-mango#rust     # in the current directory
+newproj python my-app                    # mkdir + git init + template + direnv allow + cd
+```
+
+Terminal helpers: `ta [name]` (attach or create a tmux session), `icat` (images in kitty),
+`kssh` (ssh through the kitty kitten).
+
+## Commit signing
+
+Commits and tags are signed with `~/.ssh/id_ed25519` (`gpg.format = ssh`). The public
+key never lives in this repo: `~/.config/git/allowed_signers` is generated at activation
+from the local `.pub` file. To get the *Verified* badge, add the same public key on GitHub
+under **Settings → SSH and GPG keys → New SSH key** with **Key type: Signing Key**.
 
 ## Secrets (sops-nix)
 
