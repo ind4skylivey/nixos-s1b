@@ -214,7 +214,7 @@ in
       "custom/power" = {
         format = "⏻";
         tooltip-format = "Session (Super+Shift+Q)";
-        on-click = "wlogout -p layer-shell -b 4 -T 280 -B 280 -L 400 -R 400";
+        on-click = "power-menu";
       };
     };
 
