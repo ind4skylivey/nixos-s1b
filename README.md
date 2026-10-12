@@ -13,10 +13,14 @@ Reproducible, themeable, and rebuilt with a single command.
 [![home-manager](https://img.shields.io/badge/home--manager-26.05-ee6ac8?style=for-the-badge)](https://github.com/nix-community/home-manager)
 [![stylix](https://img.shields.io/badge/stylix-base16-ff4f72?style=for-the-badge)](https://github.com/nix-community/stylix)
 [![Wayland](https://img.shields.io/badge/Wayland-native-7ad8e8?style=for-the-badge&logo=wayland&logoColor=black)](https://wayland.freedesktop.org)
+[![check](https://img.shields.io/github/actions/workflow/status/ind4skylivey/nixos-s1b/check.yml?branch=main&style=for-the-badge&label=flake%20check)](https://github.com/ind4skylivey/nixos-s1b/actions/workflows/check.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-a6e3a1?style=for-the-badge)](LICENSE)
 
 <img src="assets/screenshots/desktop.png" alt="Neon S1B Hk desktop: mango with waybar islands" width="100%">
 <br><br>
 <img src="assets/screenshots/startpage.png" alt="Keyboard-driven Helium start page" width="100%">
+<br><br>
+<img src="assets/screenshots/doom.png" alt="Doom Emacs dashboard with the generated Neon S1B Hk theme" width="100%">
 
 </div>
 
@@ -52,6 +56,10 @@ More about me → **[ind4skylivey.github.io/about](https://ind4skylivey.github.i
   falls back to `*.example.nix` templates, so it still evaluates from a fresh clone.
 - **Secrets with sops-nix.** Age-encrypted YAML, with the pipeline tested end to end
   using a dummy secret.
+- **Low-maintenance by default.** Store deduplication, zram, `nh` weekly cleanup,
+  a low-disk notification, a monthly "time to `nix flake update`" reminder (no
+  unattended upgrades) and an opt-in restic backup. CI runs `nix flake check`
+  against the public templates on every push.
 
 ## Stack
 
@@ -59,7 +67,7 @@ More about me → **[ind4skylivey.github.io/about](https://ind4skylivey.github.i
 | --- | --- |
 | Base | NixOS 26.05 (flake) · home-manager · stylix |
 | Compositor | [mango](https://github.com/mangowm/mango) 0.18 (scroller, tile, monocle, grid, deck, dwindle) |
-| Bar | waybar: floating rounded "islands", mango tags over `ext-workspace`, window title over mango IPC, cava |
+| Bar | waybar: floating rounded "islands", mango tags over `ext-workspace`, window title over mango IPC, cava visualizer (separate process) |
 | Launcher / menus | rofi (drun, run, window, calc, emoji, clipboard via cliphist) |
 | Notifications | swaync (notification center + DND) |
 | Lock / idle | hyprlock · hypridle (warn at 5 min, lock at 10) |
@@ -74,7 +82,10 @@ More about me → **[ind4skylivey.github.io/about](https://ind4skylivey.github.i
 | Screenshots | grim · slurp · satty |
 | Wallpaper daemon | awww |
 | Theming | stylix + custom base16 · Papirus (violet) · Bibata Modern Ice · Inter / Maple Mono NF |
-| Monitor / misc | btop · imv · tmux · lazygit · tealdeer |
+| Media / docs | mpv (video, audio) · zathura (PDF) · imv (images), all palette-themed |
+| Night light | wlsunset on a fixed schedule (20:00–07:00), `Super+Ctrl+N` toggles it |
+| Maintenance | auto-optimise-store · zram · nix-ld · low-disk alert · monthly update reminder · restic (opt-in) |
+| Monitor / misc | btop · tmux · lazygit · tealdeer |
 | Dev templates | `nix flake init -t` for Rust, PHP and Python (devShell + direnv) |
 
 ## Palette: Neon S1B Hk
@@ -120,6 +131,8 @@ specialisation = {
 .
 ├── flake.nix                     inputs, nixosConfigurations.nixos, devShells, templates
 ├── flake.lock
+├── LICENSE                       MIT
+├── .github/workflows/check.yml   CI: nix flake check + nixfmt
 ├── .sops.yaml                    age public key + creation rules
 ├── hosts/vm/
 │   ├── default.nix               picks local/*.nix or falls back to *.example.nix
@@ -132,6 +145,7 @@ specialisation = {
 │   ├── wallpaper.nix             wallpaper + lock image built with ImageMagick
 │   ├── login.nix                 greetd + tuigreet
 │   ├── nix-tools.nix             nh, nom, nvd, nixd, statix, deadnix, ns …
+│   ├── maintenance.nix           store optimise, zram, nix-ld
 │   ├── sops.nix                  sops-nix wiring
 │   ├── locale.nix
 │   ├── vm-guest.nix              QEMU/Spice/virgl guest bits
@@ -147,6 +161,8 @@ specialisation = {
 │   ├── emacs.nix                 Emacs pgtk, pinned Doom installer, generated theme
 │   ├── doom/                     Doom config (init.el, packages.el, config.el)
 │   ├── desktop-apps.nix          Helium, Strata, imv, MIME defaults
+│   ├── media.nix                 mpv, zathura, Neovim .desktop + MIME defaults
+│   ├── maintenance.nix           night light, low-disk alert, update reminder, restic
 │   └── screenshots.nix           grim/slurp/satty
 ├── pkgs/strata/                  Strata derivation + patch
 ├── templates/                    rust · php · python project flakes
@@ -204,6 +220,7 @@ The Home Manager user is `s1b`. Rename `home/s1b` and the references in
 | `Super+T` | switch theme (specialisation) |
 | `Super+W` | next wallpaper |
 | `Super+N` | notification center |
+| `Super+Ctrl+N` | night light on/off |
 | `Super+Escape` | lock (hyprlock) |
 | `Super+Shift+E` | power menu |
 | `Super+Q` | close window |
@@ -282,6 +299,39 @@ key never lives in this repo: `~/.config/git/allowed_signers` is generated at ac
 from the local `.pub` file. To get the *Verified* badge, add the same public key on GitHub
 under **Settings → SSH and GPG keys → New SSH key** with **Key type: Signing Key**.
 
+## Maintenance
+
+- **Updates are manual on purpose.** On the 1st of each month a notification shows how
+  old `flake.lock` is. When convenient: `nix flake update`, rebuild, test, commit.
+  Roll back from the boot menu or with `nixos-rebuild switch --rollback` if needed.
+- **Disk.** `nh clean` runs weekly (keeps 10 generations / 7 days), the store is
+  deduplicated, and a notification fires when `/` or `/home` passes 90 %
+  (`LOW_DISK_PERCENT` overrides it).
+- **Random binaries.** `programs.nix-ld` provides the usual loader + libraries for
+  precompiled Linux tools.
+
+## Backups (restic, opt-in)
+
+A daily `restic-home-backup` user timer is installed but does nothing until
+`~/.config/restic/env` exists (systemd `ConditionPathExists`). It backs up `~`
+(minus caches, Downloads and Doom's `.local`) plus `~/nixos-mango/local`, then
+keeps 7 daily / 4 weekly / 6 monthly snapshots. If the repository is a local path
+that isn't mounted, the run is skipped.
+
+```sh
+mkdir -p ~/.config/restic && chmod 700 ~/.config/restic
+printf '%s\n' 'your-long-passphrase' > ~/.config/restic/password && chmod 600 ~/.config/restic/password
+cat > ~/.config/restic/env <<'EOF'
+RESTIC_REPOSITORY=/run/media/<you>/<disk>/restic-nixos
+RESTIC_PASSWORD_FILE=/home/<you>/.config/restic/password
+EOF
+set -a; . ~/.config/restic/env; set +a; restic init
+systemctl --user start restic-home-backup     # first run; then it's daily
+```
+
+Keep a copy of the password (and of `~/.config/sops/age/keys.txt`) somewhere
+off the machine: without them the backup and the secrets can't be read.
+
 ## Secrets (sops-nix)
 
 ```
@@ -306,6 +356,8 @@ sops secrets/example.yaml                    # edit encrypted in place
 - [lgse/strata](https://github.com/lgse/strata): the file manager
 - [Mic92/sops-nix](https://github.com/Mic92/sops-nix) · [nix-index-database](https://github.com/nix-community/nix-index-database)
 - Wallpaper base: [wallhaven g8dqvl](https://wallhaven.cc/w/g8dqvl)
+
+Released under the [MIT License](LICENSE).
 
 ---
 

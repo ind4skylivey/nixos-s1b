@@ -9,7 +9,7 @@ in
     enable = true;
     useTextGreeter = true;
     settings.default_session = {
-      command = ''${pkgs.tuigreet}/bin/tuigreet --time --time-format '%H:%M · %A %d %b' --remember --asterisks --user-menu --greeting 'hi LiveY · mango @ nixos' --theme '${theme}' --doom-colors '#b57bff,#ee6ac8,#ff4f72' --window-padding 1 --container-padding 2 --cmd ${mangoBin}'';
+      command = "${pkgs.tuigreet}/bin/tuigreet --time --time-format '%H:%M · %A %d %b' --remember --asterisks --user-menu --greeting 'hi LiveY · mango @ nixos' --theme '${theme}' --doom-colors '#b57bff,#ee6ac8,#ff4f72' --window-padding 1 --container-padding 2 --cmd ${mangoBin}";
       user = "greeter";
     };
   };
