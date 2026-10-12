@@ -231,6 +231,17 @@ let
     "${pad 24 "Super+Mouse L / R"}Move / resize window"
     "${pad 24 "Super+Wheel"}Previous / next busy tag"
     "${pad 24 "Helium start page"}/ search · Esc normal · letter opens link · ? help"
+    ""
+    "── Emacs (Doom) ── SPC = leader (which-key shows the rest)"
+    "${pad 24 "SPC SPC / SPC ."}Find file in project / find file"
+    "${pad 24 "SPC , / SPC /"}Switch buffer / search project (ripgrep)"
+    "${pad 24 "C-h/j/k/l"}Window left/down/up/right"
+    "${pad 24 "H / L"}Previous / next buffer"
+    "${pad 24 "SPC w v / SPC w s"}Split vertical / horizontal"
+    "${pad 24 "SPC o p / SPC o -"}dirvish sidebar / dired here (h/l = up/open)"
+    "${pad 24 "SPC o t / SPC g g"}vterm popup / magit"
+    "${pad 24 "SPC e / SPC b d"}Line diagnostics / delete buffer"
+    "${pad 24 "SPC h t / SPC t o"}Pick theme (preview) / toggle transparency"
   ];
 in
 {

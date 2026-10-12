@@ -67,7 +67,7 @@ More about me → **[ind4skylivey.github.io/about](https://ind4skylivey.github.i
 | Login | greetd + tuigreet |
 | Terminal | kitty (Maple Mono NF, animated caret trail, powerline tabs) |
 | Shell / prompt | bash · starship · fastfetch · eza · zoxide · fzf · direnv |
-| Editor | neovim (native LSP: nixd · lua_ls · bashls, format on save · telescope + fzf-native · treesitter · gitsigns · diffview · flash · which-key) · Doom Emacs (pgtk) |
+| Editor | neovim (native LSP: nixd · lua_ls · bashls, format on save · telescope + fzf-native · treesitter · gitsigns · diffview · flash · which-key) · Doom Emacs (pgtk, theme generated from the palette, translucent, dashboard, dirvish, org-modern) |
 | Git | SSH-signed commits and tags · delta pager · ssh-agent (passphrase once per session) |
 | File manager | [Strata](https://github.com/lgse/strata) (GUI, built from source) · yazi (TUI) |
 | Browser | [Helium](https://github.com/imputnet/helium) |
@@ -144,6 +144,8 @@ specialisation = {
 │   ├── git.nix                   aliases, SSH signing, delta, ssh-agent
 │   ├── nvim.nix                  neovim plugins + palette prelude
 │   ├── nvim/                     neovim Lua (options, keymaps, ui, lsp …)
+│   ├── emacs.nix                 Emacs pgtk, pinned Doom installer, generated theme
+│   ├── doom/                     Doom config (init.el, packages.el, config.el)
 │   ├── desktop-apps.nix          Helium, Strata, imv, MIME defaults
 │   └── screenshots.nix           grim/slurp/satty
 ├── pkgs/strata/                  Strata derivation + patch

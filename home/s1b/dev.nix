@@ -1,5 +1,5 @@
-# Desarrollo y utilidades de terminal: tmux, direnv, Emacs (Doom), CLI.
-# Git (firma, delta, ssh-agent) vive en git.nix.
+# Desarrollo y utilidades de terminal: tmux, direnv, CLI.
+# Git (firma, delta, ssh-agent) vive en git.nix; Emacs/Doom en emacs.nix.
 # bat, fzf, lazygit y tmux los tematiza stylix con la paleta activa.
 {
   config,
@@ -9,29 +9,6 @@
 }:
 let
   c = config.lib.stylix.colors.withHashtag;
-  emacsDir = "${config.xdg.configHome}/emacs";
-
-  # Instala Doom Emacs a mano (clona y ejecuta `doom install`). No corre solo.
-  doomInstall = pkgs.writeShellApplication {
-    name = "doom-install";
-    runtimeInputs = with pkgs; [
-      git
-      coreutils
-    ];
-    text = ''
-      if [[ -x "${emacsDir}/bin/doom" ]]; then
-        echo "Doom is already installed in ${emacsDir}. Running 'doom sync'…"
-        exec "${emacsDir}/bin/doom" sync
-      fi
-      if [[ -e "${emacsDir}" ]]; then
-        echo "${emacsDir} exists but is not Doom. Move it away first." >&2
-        exit 1
-      fi
-      git clone --depth 1 https://github.com/doomemacs/doomemacs "${emacsDir}"
-      exec "${emacsDir}/bin/doom" install "$@"
-    '';
-  };
-
   # Atajos de terminal (scripts en el PATH, también usables desde rofi/mango).
   ta = pkgs.writeShellApplication {
     name = "ta";
@@ -76,24 +53,10 @@ let
   };
 in
 {
-  # ------------------------------------------------------------ Emacs / Doom
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacs-pgtk;
-  };
-  home.sessionPath = [ "${emacsDir}/bin" ];
-
   home.packages = with pkgs; [
-    doomInstall
-    # dependencias de Doom
-    git
-    ripgrep
-    fd
-    cmake
+    # toolchain C mínimo (fuera de los devShells)
     gnumake
     gcc
-    libtool
-    shellcheck
     # terminal
     wl-clipboard
     ta

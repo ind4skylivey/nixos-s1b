@@ -62,10 +62,13 @@ in
     };
   };
 
-  # JetBrainsMono queda como fallback del sistema.
+  # JetBrainsMono queda como fallback del sistema; Symbols Nerd Font da los
+  # iconos de nerd-icons (Emacs) a cualquier fuente.
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
     maple-mono.NF
+    inter
   ];
 
   specialisation = {

@@ -17,6 +17,7 @@
     ./nvim.nix
     ./desktop-apps.nix
     ./dev.nix
+    ./emacs.nix
     ./git.nix
     ./screenshots.nix
     ./startpage.nix
