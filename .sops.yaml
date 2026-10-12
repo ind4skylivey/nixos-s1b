@@ -1,0 +1,7 @@
+keys:
+  - &user_s1b age1h7n6ghqgz8kfwcah3tn0qfkpnct2773sxh0yfumrqzgh4ppz8yhqrcq0fd
+creation_rules:
+  - path_regex: secrets/[^/]+\.(yaml|yml|json|env|ini)$
+    key_groups:
+      - age:
+          - *user_s1b

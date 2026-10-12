@@ -1,0 +1,32 @@
+# Build products
+result
+result-*
+
+# Backups and local scratch
+*.bak
+*.bak-*
+*.hm-bak
+.direnv/
+
+# Machine-private overrides (real hardware, SSH keys, sudo rules)
+local/
+hosts/vm/configuration.nix
+hosts/vm/hardware-configuration.nix
+modules/ssh.nix
+
+# Age / sops private material (never commit)
+*.key
+*.pem
+keys.txt
+**/sops/age/
+secrets/*.plain.yaml
+secrets/.decrypted~*
+secrets/**/keys.txt
+.sops.yaml.bak
+
+# Editor / OS
+.DS_Store
+*~
+*.swp
+.idea/
+.vscode/
