@@ -29,6 +29,11 @@ let
     mkdir -p $out
     cp ${./startpage}/* $out/
     cp ${colors} $out/colors.css
+    # Cache-bust: Nix store files have a 1970 mtime, so Chromium caches them forever.
+    chmod -R u+w $out
+    v=$(basename $out | cut -c1-12)
+    sed -i -E "s/(colors\.css|style\.css|app\.js)\"/\1?v=$v\"/" $out/index.html
+    sed -i "s/bg\.jpg\"/bg.jpg?v=$v\"/" $out/style.css
   '';
 in
 {
