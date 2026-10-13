@@ -2,11 +2,13 @@
 # Nota: `nh os switch` llama a sudo para switch-to-configuration (pide
 # contraseña: la regla NOPASSWD solo cubre nixos-rebuild). El alias `rebuild`
 # usa nixos-rebuild para seguir sin contraseña.
-{ pkgs, ... }:
+{ pkgs, self, ... }:
 {
   programs.nh = {
     enable = true;
-    flake = "/home/s1b/nixos-mango";
+    # Ubicación del flake: derivada del propio repo (donde esté clonado),
+    # no un path absoluto que se rompe en otra máquina.
+    flake = self.outPath;
     clean = {
       enable = true;
       dates = "weekly";
