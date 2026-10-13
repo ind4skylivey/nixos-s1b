@@ -25,13 +25,6 @@ Reproducible, themeable, and rebuilt with a single command.
 </div>
 
 ---
-
-I'm **LiveY**, a security researcher and open intelligence engineer. I run Arch,
-Parrot and Kali day to day, and this repo is the declarative side of that: a
-complete Wayland desktop built on the [mango](https://github.com/mangowm/mango)
-compositor. Every color, keybind, bar module and package comes from Nix.
-More about me → **[ind4skylivey.github.io/about](https://ind4skylivey.github.io/about/)**
-
 ## Highlights
 
 - **One palette, everywhere.** A custom base16 scheme (*Neon S1B Hk*) goes through
@@ -292,13 +285,6 @@ newproj python my-app                    # mkdir + git init + template + direnv 
 Terminal helpers: `ta [name]` (attach or create a tmux session), `icat` (images in kitty),
 `kssh` (ssh through the kitty kitten).
 
-## Commit signing
-
-Commits and tags are signed with `~/.ssh/id_ed25519` (`gpg.format = ssh`). The public
-key never lives in this repo: `~/.config/git/allowed_signers` is generated at activation
-from the local `.pub` file. To get the *Verified* badge, add the same public key on GitHub
-under **Settings → SSH and GPG keys → New SSH key** with **Key type: Signing Key**.
-
 ## Maintenance
 
 - **Updates are manual on purpose.** On the 1st of each month a notification shows how
@@ -355,9 +341,6 @@ sops secrets/example.yaml                    # edit encrypted in place
 - [oxcl/nix-flake-helium-browser](https://github.com/oxcl/nix-flake-helium-browser): Helium packaging
 - [lgse/strata](https://github.com/lgse/strata): the file manager
 - [Mic92/sops-nix](https://github.com/Mic92/sops-nix) · [nix-index-database](https://github.com/nix-community/nix-index-database)
-- Wallpaper base: [wallhaven g8dqvl](https://wallhaven.cc/w/g8dqvl)
-
-Released under the [MIT License](LICENSE).
 
 ---
 
