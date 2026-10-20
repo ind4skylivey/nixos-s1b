@@ -266,10 +266,10 @@ in
       exec_once = [ ];
 
       # ----------------------------------------------------------- monitor
-      # VM a 2K: virtio-gpu no anuncia 2560x1440, se fuerza como modo custom.
-      # Escala 1.5 (espacio lógico ~1707x960) para que el texto sea legible.
+      # VM: sin modo forzado; sigue el tamaño de la ventana Spice/virt-manager.
+      # Escala 1 (modo preferido que anuncia virtio-gpu).
       monitor_rule = [
-        "name:^Virtual-1$,width:2560,height:1440,refresh:60,x:0,y:0,scale:1.5,custom:1"
+        "name:^Virtual-1$,x:0,y:0,scale:1"
       ];
 
       # ---------------------------------------------------------------- env

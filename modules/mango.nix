@@ -3,6 +3,12 @@
 {
   programs.mango.enable = true;
 
+  # Portales: wlr primero (captura), gtk de respaldo; evita buscar Mutter.
+  xdg.portal.config.common.default = [
+    "wlr"
+    "gtk"
+  ];
+
   # Necesario para que home-manager/stylix escriban la configuración GTK (dconf).
   programs.dconf.enable = lib.mkDefault true;
 

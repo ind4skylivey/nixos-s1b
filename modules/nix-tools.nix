@@ -34,6 +34,9 @@
       };
     };
 
+    # Que la limpieza atrasada no corra justo al arrancar la VM.
+    systemd.timers.nh-clean.timerConfig.RandomizedDelaySec = "1h";
+
     # Builds locales contenidos: la VM tiene 8 GB y compilar en paralelo la
     # dejaba sin memoria (swap). Se prioriza el caché binario.
     nix.settings = {
