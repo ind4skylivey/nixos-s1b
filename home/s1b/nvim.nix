@@ -2,6 +2,7 @@
 # la paleta de stylix + la ruta del flake se generan desde Nix.
 {
   config,
+  osConfig,
   lib,
   pkgs,
   ...
@@ -71,7 +72,7 @@ in
       vim.g.s1b_palette = {
       ${palette}
       }
-      vim.g.s1b_flake = "${config.home.homeDirectory}/nixos-mango"
+      vim.g.s1b_flake = "${osConfig.s1b.flakeCheckout}"
       require("s1b")
     '';
   };

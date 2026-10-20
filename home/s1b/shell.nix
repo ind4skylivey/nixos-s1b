@@ -1,5 +1,10 @@
 # Shell: bash + starship (paleta Neon S1B Hk) + fastfetch + eza. Ligero.
-{ config, pkgs, ... }:
+{
+  config,
+  osConfig,
+  pkgs,
+  ...
+}:
 let
   c = config.lib.stylix.colors.withHashtag;
 in
@@ -13,8 +18,8 @@ in
       l = "eza -lah --icons=auto --group-directories-first";
       lt = "eza -l --sort=modified --reverse --icons=auto";
       tree = "eza --tree --icons=auto";
-      sec = "nix develop ${config.home.homeDirectory}/nixos-mango#sec";
-      re = "nix develop ${config.home.homeDirectory}/nixos-mango#re";
+      sec = "nix develop ${osConfig.s1b.flakeCheckout}#sec";
+      re = "nix develop ${osConfig.s1b.flakeCheckout}#re";
     };
     # fastfetch solo en la primera shell interactiva de kitty (no por ssh).
     initExtra = ''

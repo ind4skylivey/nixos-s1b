@@ -18,7 +18,7 @@
     "sr_mod"
     "virtio_blk"
   ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [ "virtio_gpu" ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
 

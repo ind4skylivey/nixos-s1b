@@ -6,6 +6,11 @@
   # Archivos idénticos del store como hardlinks: al construir y, por si
   # acaso, una pasada semanal.
   nix.settings.auto-optimise-store = true;
+  # root ya es trusted por defecto; se suma wheel.
+  nix.settings.trusted-users = [ "@wheel" ];
+
+  # Límite del journal persistente.
+  services.journald.extraConfig = "SystemMaxUse=500M";
   nix.optimise = {
     automatic = true;
     dates = [ "weekly" ];

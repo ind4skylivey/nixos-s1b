@@ -4,6 +4,9 @@
   # Agente QEMU (apagado limpio, info de IP en virt-manager, etc.).
   services.qemuGuest.enable = true;
 
+  # 6 GiB fijos + zram con prioridad: evitar swap a disco temprano.
+  boot.kernel.sysctl."vm.swappiness" = 10;
+
   # Agente Spice: portapapeles compartido y ajuste de resolución.
   # El demonio corre como servicio del sistema; el agente de usuario
   # (spice-vdagent) se lanza desde el autostart de mango (home/s1b/mango.nix).
