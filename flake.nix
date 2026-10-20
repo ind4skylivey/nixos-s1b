@@ -108,7 +108,7 @@
 
       formatter.${system} = nixpkgs.legacyPackages.${system}.nixfmt;
 
-      # Plantillas de proyecto: `nix flake init -t ~/nixos-mango#rust`
+      # Plantillas de proyecto: `nix flake init -t ~/nixos-s1b#rust`
       # (o `newproj rust mi-app`). Cada una trae devShell + .envrc + .gitignore.
       templates = {
         rust = {
@@ -129,8 +129,8 @@
       };
 
       # Shells opcionales (no van en el sistema base).
-      #   nix develop ~/nixos-mango#sec
-      #   nix develop ~/nixos-mango#re
+      #   nix develop ~/nixos-s1b#sec
+      #   nix develop ~/nixos-s1b#re
       devShells.${system} =
         let
           pkgs = nixpkgs.legacyPackages.${system};

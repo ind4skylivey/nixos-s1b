@@ -2,11 +2,12 @@
 # Requiere: sudo -n solo para /run/current-system/sw/bin/nixos-rebuild.
 {
   config,
+  osConfig,
   pkgs,
   ...
 }:
 let
-  flake = "${config.home.homeDirectory}/nixos-mango";
+  flake = "${osConfig.s1b.flakeCheckout}";
   switcher = pkgs.writeShellApplication {
     name = "mango-theme-switch";
     runtimeInputs = [

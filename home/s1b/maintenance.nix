@@ -4,12 +4,12 @@
 #   - recordatorio mensual para actualizar flake.lock (no actualiza solo)
 #   - backup con restic, apagado hasta que exista ~/.config/restic/env
 {
-  config,
+  osConfig,
   pkgs,
   ...
 }:
 let
-  flake = "${config.home.homeDirectory}/nixos-mango";
+  flake = "${osConfig.s1b.flakeCheckout}";
   notify = "${pkgs.libnotify}/bin/notify-send";
 
   nightlightToggle = pkgs.writeShellApplication {
@@ -59,7 +59,7 @@ let
     text = ''
       age=$(git -C "${flake}" log -1 --format=%cr -- flake.lock 2>/dev/null || echo "unknown")
       notify-send -a nixos "Monthly update" \
-        "flake.lock last changed $age. When you have time: cd ~/nixos-mango && nix flake update, then rebuild and commit."
+        "flake.lock last changed $age. When you have time: cd ${flake} && nix flake update, then rebuild and commit."
     '';
   };
 
@@ -86,7 +86,7 @@ let
         --exclude "$HOME/.config/emacs/.local" \
         --exclude "$HOME/.local/state" \
         --exclude "$HOME/Downloads" \
-        "$HOME" "$HOME/nixos-mango/local"
+        "$HOME" "${flake}/local"
       restic forget --prune --keep-daily 7 --keep-weekly 4 --keep-monthly 6
       notify-send -u low -a restic "Backup" "Home backup finished"
     '';
@@ -148,7 +148,7 @@ in
 
   systemd.user.services.restic-home-backup = {
     Unit = {
-      Description = "restic backup of ~ and ~/nixos-mango/local";
+      Description = "restic backup of ~ and ${flake}/local";
       ConditionPathExists = "%h/.config/restic/env";
     };
     Service = {

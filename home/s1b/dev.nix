@@ -3,6 +3,7 @@
 # bat, fzf, lazygit y tmux los tematiza stylix con la paleta activa.
 {
   config,
+  osConfig,
   lib,
   pkgs,
   ...
@@ -35,7 +36,7 @@ let
       coreutils
     ];
     text = ''
-      flake="''${NEWPROJ_FLAKE:-${config.home.homeDirectory}/nixos-mango}"
+      flake="''${NEWPROJ_FLAKE:-${osConfig.s1b.flakeCheckout}}"
       if [[ $# -lt 1 || "$1" == -h || "$1" == --help ]]; then
         echo "usage: newproj <rust|php|python> [dir]" >&2
         exit 64
@@ -133,9 +134,9 @@ in
   programs.bash.shellAliases = {
     # path: sigue viendo archivos sin trackear; con git el flake solo ve lo
     # commiteado/staged — haz `git add` antes de rebuild si tocaste archivos nuevos.
-    rebuild = "sudo -n /run/current-system/sw/bin/nixos-rebuild switch --flake path:${config.home.homeDirectory}/nixos-mango#nixos";
+    rebuild = "sudo -n /run/current-system/sw/bin/nixos-rebuild switch --flake path:${osConfig.s1b.flakeCheckout}#nixos";
     lg = "lazygit";
-    nix-lint = "statix check ${config.home.homeDirectory}/nixos-mango && deadnix ${config.home.homeDirectory}/nixos-mango";
+    nix-lint = "statix check ${osConfig.s1b.flakeCheckout} && deadnix ${osConfig.s1b.flakeCheckout}";
     ns = "ns"; # nix-search-tv + fzf (paquete del sistema)
   };
 

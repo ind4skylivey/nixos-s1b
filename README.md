@@ -170,8 +170,8 @@ specialisation = {
 > replace the hardware config and drop `modules/vm-guest.nix` if you don't need it.
 
 ```sh
-git clone https://github.com/ind4skylivey/nixos-s1b ~/nixos-mango
-cd ~/nixos-mango
+git clone https://github.com/ind4skylivey/nixos-s1b ~/nixos-s1b
+cd ~/nixos-s1b
 
 # 1. machine-private files (gitignored)
 mkdir -p local
@@ -278,7 +278,7 @@ Each template ships a `flake.nix` devShell, an `.envrc` (`use flake`) and a `.gi
 | `python` | python3 · uv · ruff · basedpyright |
 
 ```sh
-nix flake init -t ~/nixos-mango#rust     # in the current directory
+nix flake init -t ~/nixos-s1b#rust     # in the current directory
 newproj python my-app                    # mkdir + git init + template + direnv allow + cd
 ```
 
@@ -300,7 +300,7 @@ Terminal helpers: `ta [name]` (attach or create a tmux session), `icat` (images 
 
 A daily `restic-home-backup` user timer is installed but does nothing until
 `~/.config/restic/env` exists (systemd `ConditionPathExists`). It backs up `~`
-(minus caches, Downloads and Doom's `.local`) plus `~/nixos-mango/local`, then
+(minus caches, Downloads and Doom's `.local`) plus `~/nixos-s1b/local`, then
 keeps 7 daily / 4 weekly / 6 monthly snapshots. If the repository is a local path
 that isn't mounted, the run is skipped.
 
